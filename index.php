@@ -1,7 +1,7 @@
 <?php
+include ("./configuration/config.php");
 include ("./include/header.php");
 include ("./include/navBar.php");
-include ("./configuration/config.php");
 
 ?>
 
@@ -19,7 +19,7 @@ include ("./configuration/config.php");
                 </div>
             </div>
         </div>
-    <?php else: ?>
+    <?php else: ?>     
         <div class="row">
             <div class="col-sm-6 col-md-4">
                 <div class="card">

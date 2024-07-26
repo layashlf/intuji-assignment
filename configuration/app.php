@@ -1,3 +1,3 @@
 <?php 
-define("BASE_URL", "/intuji-assignment/");
-define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/intuji-assignment/");
+define("BASE_URL", "/");
+define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/");

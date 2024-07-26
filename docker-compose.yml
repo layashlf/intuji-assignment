@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - .:/var/www/html
+    depends_on:
+      - php
+
+  php:
+    image: php:8.0.3-fpm
+    volumes:
+      - .:/var/www/html
+    environment:
+      - COMPOSER_HOME=/tmp
+
+  composer:
+    image: composer:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: composer install

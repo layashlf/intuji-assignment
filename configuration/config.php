@@ -1,13 +1,13 @@
 <?php
+session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 
-session_start();
 
 
 $client = new Google\Client();
 $client->setAuthConfig(__DIR__ . '/../secrets/client_secret_json.json');
 $client->addScope(['https://www.googleapis.com/auth/calendar']);
-$client->setRedirectUri('http://localhost');
+$client->setRedirectUri('http://localhost:8000');
 
 $service = new Google_Service_Calendar($client);
 

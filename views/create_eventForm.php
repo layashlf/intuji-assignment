@@ -59,7 +59,7 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
       <input type="text" class="form-control" id="guests" name="guests"
         placeholder="Enter email addresses separated by commas" required>
     </div>
-    <Button onclick="createEvents(this)" class="btn btn-primary"><i class="spinner"></i> Submit</Button>
+    <Button type="submit" onclick="createEvents(event,this)" class="btn btn-primary"><i class="spinner"></i> Submit</Button>
   </form>
 </div>
 
@@ -81,10 +81,8 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
     }, false);
   })();
 
-  function createEvents(selector) {
-    event.preventDefault();
+  function createEvents(event , selector) {
     const formData = $('form').serialize()
-
 
     $(selector).find('.spinner').addClass('spinner-grow');
     $.ajax({
@@ -92,10 +90,12 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
       context: document.body,
       type: "POST", data: formData
 
-    }).done(() => {
-
-      $(selector).find('.spinner').addClass('spinner-grow');
-      window.location.reload();
+    }).done((res) => {
+      if(res){
+         window.location.reload();
+      }
+      $(selector).find('.spinner').removeClass('spinner-grow');
+     
     });
 
   }

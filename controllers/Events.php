@@ -11,7 +11,13 @@ class Events
 
     }
 
-
+    /**
+     * Creates a new event in the primary calendar using the form data.
+     *
+     * @return string Returns a JSON-encoded string containing the success message and status if the event was successfully created,
+     *                or a JSON-encoded string containing the error message and status if there was an error creating the event.
+     * @throws exception If there was an error creating the event, the exception message is echoed and false is returned.
+     */
     public function createEvent()
     {
         if ($this->validateFormField()[0] == 'failed') {
@@ -29,7 +35,7 @@ class Events
             json_encode(["message" => $_SESSION["successMessage"], "status" => "success"], JSON_PRETTY_PRINT);
         } catch (exception $e) {
             return json_encode($e->getMessage());
-            
+
         }
 
     }
@@ -40,10 +46,15 @@ class Events
      */
     public function listEvents()
     {
-
-        $calendarId = 'primary';
-        $results = $this->service->events->listEvents($calendarId);
-        return $results;
+        try {
+            $calendarId = 'primary';
+            $results = $this->service->events->listEvents($calendarId);
+            return $results;
+        } catch (exception $e) {
+            if ($e->getCode() == 401) {
+                $this->disconnectEvent();
+            }
+        }
     }
     /**
      * Deletes an event by its ID.
@@ -119,7 +130,18 @@ class Events
         return $body;
     }
 
-
+    /**
+     * Validates the form fields for creating an event.
+     *
+     * This function checks if the required fields for creating an event are filled.
+     * It sets an error message in the session if any of the required fields are empty.
+     * Returns an array containing the status and error message.
+     *
+     * @return array Returns an array containing the status and error message.
+     *               The status will be "success" if all the required fields are filled,
+     *               otherwise it will be "failed".
+     *               The error message will be set in the session if any of the required fields are empty.
+     */
     private function validateFormField()
     {
         $valid = true;

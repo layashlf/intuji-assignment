@@ -1,5 +1,6 @@
 <?php
 include ("./include/header.php");
+include ("./include/navBar.php");
 include ("./configuration/config.php");
 
 ?>

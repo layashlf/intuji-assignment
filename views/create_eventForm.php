@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/../controllers/Events.php';
 require_once __DIR__ . '/../include/header.php';
-require_once __DIR__ . '/../include/navBar.php'; ?>
+require_once __DIR__ . '/../include/navBar.php';
 
+?>
 
 
 <div class="container mt-3">
@@ -20,7 +22,8 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
       ?>
     </div>
   <?php endif ?>
-  <form id="eventForm" class="needs-validation" novalidate>
+  <form id="eventForm" action="<?php echo BASE_URL ?>events/eventsHandler.php" method="post" class="needs-validation"
+    novalidate>
     <div class="mb-3">
       <label for="eventName" class="form-label">Event Title</label>
       <input type="text" class="form-control" id="eventName" name="eventName" required>
@@ -59,45 +62,27 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
       <input type="text" class="form-control" id="guests" name="guests"
         placeholder="Enter email addresses separated by commas" required>
     </div>
-    <Button type="submit" onclick="createEvents(event,this)" class="btn btn-primary"><i class="spinner"></i> Submit</Button>
+    <Button type="submit" class="btn btn-primary"><i class="spinner"></i> Submit</Button>
   </form>
 </div>
 
 <script>
-  (function () {
+  (function () {  
     'use strict';
     window.addEventListener('load', function () {
       var forms = document.getElementsByClassName('needs-validation');
       var validation = Array.prototype.filter.call(forms, function (form) {
         form.addEventListener('submit', function (event) {
+          $('.spinner').addClass('spinner-grow');
           if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
           }
           form.classList.add('was-validated');
-
+          $(this).find('.spinner').removeClass('spinner-grow');
         }, false);
       });
     }, false);
   })();
-
-  function createEvents(event , selector) {
-    const formData = $('form').serialize()
-
-    $(selector).find('.spinner').addClass('spinner-grow');
-    $.ajax({
-      url: "/events/eventsHandler.php",
-      context: document.body,
-      type: "POST", data: formData
-
-    }).done((res) => {
-      if(res){
-         window.location.reload();
-      }
-      $(selector).find('.spinner').removeClass('spinner-grow');
-     
-    });
-
-  }
 
 </script>

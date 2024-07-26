@@ -10,30 +10,26 @@ class Events
         $this->service = new Google_Service_Calendar($client);
 
     }
-    /**
-     * Creates a new event in the primary calendar using the form data.
-     *
-     * @return bool Returns true if the event was successfully created, false otherwise.
-     * @throws exception If there was an error creating the event, the exception message is echoed and false is returned.
-     */
-    public function createEvent(): bool
+
+
+    public function createEvent()
     {
-        if (!$this->validateFormField()) {
-            return false;
+        if ($this->validateFormField()[0] == 'failed') {
+
+            return json_encode(["message" => $_SESSION["errormsg"], "status" => $_SESSION["status"]], JSON_PRETTY_PRINT); // echo json_encode($_SESSION["errormsg"]);
         }
         $formBody = $this->prepareBody();
 
         try {
 
-
             $event = new Google_Service_Calendar_Event($formBody);
             $calendarId = 'primary';
             $event = $this->service->events->insert($calendarId, $event);
             $_SESSION['successMessage'] = "Event Created";
-            return true;
+            json_encode(["message" => $_SESSION["successMessage"], "status" => "success"], JSON_PRETTY_PRINT);
         } catch (exception $e) {
-            echo $e->getMessage();
-            return false;
+            return json_encode($e->getMessage());
+            
         }
 
     }
@@ -122,15 +118,8 @@ class Events
         );
         return $body;
     }
-    /**
-     * Validates the form fields for creating an event.
-     *
-     * This function checks if the required fields for creating an event are filled.
-     * It sets an error message in the session if any of the required fields are empty.
-     * Returns true if all the required fields are filled, otherwise false.
-     *
-     * @return bool Returns true if all the required fields are filled, otherwise false.
-     */
+
+
     private function validateFormField()
     {
         $valid = true;
@@ -166,6 +155,7 @@ class Events
             $_SESSION["errormsg"] = 'Guest list is required';
             $valid = false;
         }
-        return $valid;
+        $_SESSION["status"] = $valid ? "success" : "failed";
+        return [$_SESSION["status"], $_SESSION["errormsg"]];
     }
 }

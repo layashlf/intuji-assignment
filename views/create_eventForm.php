@@ -88,7 +88,7 @@ require_once __DIR__ . '/../include/navBar.php'; ?>
 
     $(selector).find('.spinner').addClass('spinner-grow');
     $.ajax({
-      url: "eventsHandler.php",
+      url: "/events/eventsHandler.php",
       context: document.body,
       type: "POST", data: formData
 

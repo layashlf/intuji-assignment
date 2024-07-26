@@ -61,7 +61,7 @@ if (count($results->getItems()) == 0): ?>
         $(selector).removeClass(' bi-trash btn btn-outline-danger');
         $(selector).find('.spinner').addClass('spinner-grow');
         $.ajax({
-            url: "eventsHandler.php?id=" + id,
+            url: "/events/eventsHandler.php?id=" + id,
             context: document.body,
             type: "DELETE"
 
